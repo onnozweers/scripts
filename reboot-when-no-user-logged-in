@@ -9,14 +9,14 @@ if [ "$1" = "--nohup" ] ; then
   # This script has called itself in a nohup shell. Let's get to work.
   while true ; do
     if [ -z "`who`" ] ; then
-      echo "No user found. Rebooting."
+      echo "`date` - No user found. Rebooting."
       reboot
     else
-      echo "Users found. Sleeping."
+      echo "`date` - Users found. Sleeping."
     fi
     sleep 60
   done
 else
-  echo "This scipt will call itself in a nohup shell. You can log out. If all users have left the system, it will be rebooted. To cancel the reboot, do 'ps -ef | grep nohup' and kill these processes."
+  echo "This script will call itself in a nohup shell. You can log out. If all users have left the system, it will be rebooted. To cancel the reboot, do 'ps -ef | grep nohup' and kill this script."
   nohup $0 --nohup &
 fi
