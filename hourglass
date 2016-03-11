@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# This script asks with a GUI dialog how many minutes your kid is allowed to play.
+# When time has passed, the script will warn your kid and then shut down.
+# You can specify multiple periods if multiple kids want to play; 
+# this script will notify when it's time for them to swap places.
+
+# Change log:
+# 2016-03-11 - Initial upload (Dutch interface) to Github - Onno Zweers
+
+# Todo:
+# - Internationalize
+
+minutes=$(zenity --entry --text="Aantal minuten speeltijd (meerdere tijden scheiden met een spatie)" --entry-text="10")
+
+if [ -z "$minutes" ] ; then
+  echo "Usage: `basename $0` <minutes>"
+  exit 1
+fi
+
+# Space? Then multiple times
+if [[ "$minutes" =~ " " ]] ; then
+  sleep 30s
+  first=yes
+  for time in $minutes ; do
+    if [ "$first" = "yes" ] ; then
+      notify-send "Je tijd ($time minuten) gaat NU in!"
+      sleep ${time}m
+      first=no
+    else
+      notify-send --urgency=critical 'Wisselen! Volgende tijd is '$time' minuten.'
+      sleep ${time}m
+    fi
+  done
+else
+  # Only a single amount of minutes specified
+  sleep 30s
+  notify-send 'Je tijd gaat NU in!'
+  sleep ${minutes}m
+fi
+
+notify-send --urgency=critical 'De tijd is om!'
+#sleep 30s
+#notify-send --urgency=critical 'De tijd is ECHT om!!!'
+#sleep 30s
+
+for progress in {1..100} ; do 
+  echo $progress
+  sleep 0.5s
+done \
+| zenity --progress --text="Computer gaat stoppen" --no-cancel --auto-close
+
+notify-send --urgency=critical 'De computer gaat NU afsluiten!'
+sleep 30s
+
+poweroff
