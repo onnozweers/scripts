@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# The version of duplicity in the EL repo is way too old.
+# This installs the latest duplicity, including dependencies.
+# Just run it as root, sit back and enjoy.
+# This script has been tested on Centos 7.
+
+# Changelog:
+# 2016-10-17 - First version - Onno
+# 2016-11-04 - Added yum install wget (it's not in Minimal)
+
+
+yum -y install wget gcc python-devel python-pip librsync-devel python-lockfile
+pip install PyDrive
+
+# Download latest version
+cd
+mkdir -p duplicity
+cd duplicity
+rm -rf /root/duplicity/*
+# Find the latest duplicity source tarball from Launchpad.
+# The 'grep -v duplicity-0.7.07.tar.gz' is because there is a 0.7.07.1 that complicates sorting.
+latest=$(wget https://code.launchpad.net/duplicity/+download -o /dev/null -O - \
+         | egrep -o 'https://code.launchpad.net/duplicity/[-0-9a-z\./]+/\+download/duplicity-[-0-9a-z\.]+.tar.gz' \
+         | grep -v duplicity-0.7.07.tar.gz \
+         | sort -r \
+         | head -n 1)
+wget "$latest" -O duplicity.tar.gz
+tar -xf duplicity.tar.gz
+cd duplicity*/
+python setup.py install
