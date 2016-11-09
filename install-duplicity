@@ -8,9 +8,10 @@
 # Changelog:
 # 2016-10-17 - First version - Onno
 # 2016-11-04 - Added yum install wget (it's not in Minimal)
+# 2016-11-09 - Added python-paramiko - Onno
 
 
-yum -y install wget gcc python-devel python-pip librsync-devel python-lockfile
+yum -y install wget gcc python-devel python-pip librsync-devel python-lockfile python-paramiko
 pip install PyDrive
 
 # Download latest version
