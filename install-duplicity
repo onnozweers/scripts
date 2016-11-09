@@ -14,11 +14,14 @@
 yum -y install wget gcc python-devel python-pip librsync-devel python-lockfile python-paramiko
 pip install PyDrive
 
-# Download latest version
+# Prepare dir
 cd
 mkdir -p duplicity
 cd duplicity
+
+# Clean up previous stuff
 rm -rf /root/duplicity/*
+
 # Find the latest duplicity source tarball from Launchpad.
 # The 'grep -v duplicity-0.7.07.tar.gz' is because there is a 0.7.07.1 that complicates sorting.
 latest=$(wget https://code.launchpad.net/duplicity/+download -o /dev/null -O - \
