@@ -2,8 +2,11 @@
 
 # The version of duplicity in the EL repo is way too old.
 # This installs the latest duplicity, including dependencies.
-# Just run it as root, sit back and enjoy.
 # This script has been tested on Centos 7.
+# Just run it as root, sit back and enjoy:
+#   wget https://raw.githubusercontent.com/onnozweers/scripts/master/install-duplicity
+#   chmod 700 install-duplicity 
+#   ./install-duplicity 
 
 # Changelog:
 # 2016-10-17 - First version - Onno
