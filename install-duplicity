@@ -16,7 +16,7 @@
 yum -y install wget gcc rsync \
                python-devel python-pip librsync-devel python-lockfile \
                python-paramiko python-crypto python-boto
-pip install PyDrive python-swiftclient en python-keystoneclient
+pip install PyDrive python-swiftclient python-keystoneclient
 
 # Prepare dir
 cd
