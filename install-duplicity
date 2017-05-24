@@ -10,12 +10,13 @@
 # 2016-11-04 - Added yum install wget (it's not in Minimal)
 # 2016-11-09 - Added python-paramiko - Onno
 # 2016-11-12 - Added rsync, python-crypto, python-boto - Onno
+# 2017-05-24 - Added python-swiftclient en python-keystoneclient - Onno
 
 # For package details see http://duplicity.nongnu.org/duplicity.1.html#sect30 (Requirements section)
 yum -y install wget gcc rsync \
                python-devel python-pip librsync-devel python-lockfile \
                python-paramiko python-crypto python-boto
-pip install PyDrive
+pip install PyDrive python-swiftclient en python-keystoneclient
 
 # Prepare dir
 cd
