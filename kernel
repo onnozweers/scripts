@@ -9,6 +9,9 @@ if [ -f '/etc/os-release' ] ; then
     echo "This script was tested on Centos 7. Use on other distros may be DANGEROUS!"
     exit 1
   fi
+else
+  echo "Could not determine distro."
+  exit 1
 fi
 
 # Refresh kernel list
