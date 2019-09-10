@@ -9,7 +9,7 @@ Onno
 emoji
 -----
 
-A script that replaces hexadecimal characters (like in `md5sum`) with emoji's for easier visual comparison.
+A script that replaces hexadecimal characters (like in `md5sum`) with emojis for easier visual comparison.
 
 hourglass
 ---------
@@ -25,6 +25,11 @@ install-openvas-centos7
 -----------------------
 
 Set up OpenVAS security scanner.
+
+kernel
+------
+
+`kernel` is a script that shows which kernel is selected to boot from. You can also set another kernel to boot. Tested on Centos 7.
 
 reboot-when-no-user-logged-in
 -----------------------------
