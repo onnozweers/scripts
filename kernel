@@ -27,6 +27,10 @@ KERNEL_LIST=$(
 if [ -z "$1" ] ; then
   # Show which kernel of the list is set to boot.
   grub_default=$(grep GRUB_DEFAULT /etc/default/grub | sed -e 's/GRUB_DEFAULT=//')
+  if [ "$grub_default" = "saved" ] ; then
+    echo -n "Default kernel: saved (probably $(uname -r))"
+    grub_default=999  # Don't show highlighted item
+  fi
   echo "$KERNEL_LIST" | sed -e 's/^/ /' -e "$((grub_default + 1))s/^ />/"
 else
   # If a number is provided, select the kernel with that number for boot.
