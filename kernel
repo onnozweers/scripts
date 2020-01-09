@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # This scripts lists all kernels and indicates which kernel is selected to boot.
+# You can also set the entry you want to boot next.
 
 # Tested on Centos 7; quit on other distros
 if [ -f '/etc/os-release' ] ; then
