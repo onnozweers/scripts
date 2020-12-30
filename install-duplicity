@@ -20,7 +20,7 @@
 yum -y install wget gcc rsync \
                python3 python3-devel python3-pip librsync-devel python3-lockfile \
                python3-paramiko python3-crypto python3-boto
-pip3 install PyDrive python-swiftclient python-keystoneclient fasteners
+pip3 install PyDrive python-swiftclient python-keystoneclient fasteners future
 
 # Prepare dir
 cd
