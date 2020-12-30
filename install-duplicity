@@ -14,12 +14,13 @@
 # 2016-11-09 - Added python-paramiko - Onno
 # 2016-11-12 - Added rsync, python-crypto, python-boto - Onno
 # 2017-05-24 - Added python-swiftclient and python-keystoneclient - Onno
+# 2020-12-30 - Adapted for python3
 
 # For package details see http://duplicity.nongnu.org/duplicity.1.html#sect30 (Requirements section)
 yum -y install wget gcc rsync \
-               python-devel python-pip librsync-devel python-lockfile \
-               python-paramiko python-crypto python-boto
-pip install PyDrive python-swiftclient python-keystoneclient python-fasteners
+               python3 python3-devel python3-pip librsync-devel python3-lockfile \
+               python3-paramiko python3-crypto python3-boto
+pip3 install PyDrive python-swiftclient python-keystoneclient fasteners
 
 # Prepare dir
 cd
@@ -39,4 +40,4 @@ latest=$(wget https://code.launchpad.net/duplicity/+download -o /dev/null -O - \
 wget "$latest" -O duplicity.tar.gz
 tar -xf duplicity.tar.gz
 cd duplicity*/
-python setup.py install
+python3 setup.py install
