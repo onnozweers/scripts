@@ -19,8 +19,8 @@
 
 # For package details see http://duplicity.nongnu.org/duplicity.1.html#sect30 (Requirements section)
 yum -y install wget gcc rsync \
-               python3 python3-devel python3-pip librsync-devel python3-lockfile \
-               python3-paramiko python3-crypto python3-boto
+               python3 python3-devel python3-pip librsync-devel python-lockfile \
+               python-paramiko python-crypto python-boto
 pip3 install PyDrive python-swiftclient python-keystoneclient fasteners future wheel
 
 # Prepare dir
