@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # The version of duplicity in the EL9 repo is a bit old.
+# And I couldn't get it working with a Swift backend.
 # This script installs the latest duplicity, including dependencies.
 # This script has been tested on Alma Linux 9.
 # Just run it as root, sit back and enjoy:
