@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# The version of duplicity in the EL9 repo is a bit old.
+# This script installs the latest duplicity, including dependencies.
+# This script has been tested on Alma Linux 9.
+# Just run it as root, sit back and enjoy:
+#   wget https://raw.githubusercontent.com/onnozweers/scripts/master/install-duplicity-el9
+#   chmod 700 install-duplicity
+#   ./install-duplicity
+
+# Changelog:
+# 2016-10-17 - First version (for EL7) - Onno
+# 2016-11-04 - Added yum install wget (it's not in Minimal)
+# 2016-11-09 - Added python-paramiko - Onno
+# 2016-11-12 - Added rsync, python-crypto, python-boto - Onno
+# 2017-05-24 - Added python-swiftclient and python-keystoneclient - Onno
+# 2020-12-30 - Adapted for python3 - Onno
+# 2021-01-08 - Added wheel; showing duplicity version after install - Onno
+# 2024-04-19 - Adapted to EL9 (tested on Alma Linux 9)
+
+# For package details see http://duplicity.nongnu.org/duplicity.1.html#sect30 (Requirements section)
+yum -y install wget gcc rsync \
+               python3 python3-devel python3-pip librsync-devel python-lockfile \
+               python-paramiko python3-cryptography python3-boto3 \
+               librsync libsodium ncftp python3-bcrypt python3-boto3 python3-botocore \
+               python3-cffi python3-cryptography python3-fasteners python3-future \
+               python3-jmespath python3-lockfile python3-paramiko python3-pexpect \
+               python3-ply python3-ptyprocess python3-pyasn1 python3-pycparser python3-pynacl python3-s3transfer \
+|| exit 1    # If this step failed, quit
+
+pip3 install PyDrive python-swiftclient python-keystoneclient
+
+# Prepare dir
+cd
+mkdir -p duplicity
+cd duplicity
+
+# Clean up previous stuff
+rm -rf /root/duplicity/*
+
+# Find the latest duplicity source tarball from Launchpad.
+# The 'grep -v duplicity-0.7.07.tar.gz' is because there is a 0.7.07.1 that complicates sorting.
+latest=$(wget https://code.launchpad.net/duplicity/+download -o /dev/null -O - \
+         | egrep -o 'https://code.launchpad.net/duplicity/[-0-9a-z\./]+/\+download/duplicity-[-0-9a-z\.]+.tar.gz' \
+         | grep -v duplicity-0.7.07.tar.gz \
+         | sort -r \
+         | head -n 1)
+wget "$latest" -O duplicity.tar.gz
+tar -xf duplicity.tar.gz
+cd duplicity*/
+python3 setup.py install
+
+echo
+echo 'Checking `duplicity --version`:'
+duplicity --version
