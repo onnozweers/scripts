@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# WARNING: this script is outdated. The latest Duplicity requires python 3.7 
+# which EL7 doesn't have. I suggest you switch back to the duplicity from the repo.
+# Keeping this script here for reference; there may be some info here that is still useful.
+
 # The version of duplicity in the EL repo is way too old.
 # This installs the latest duplicity, including dependencies.
 # This script has been tested on Centos 7.
