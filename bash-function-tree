@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# This script will read a bash script and produce
+# a list of functions and their dependencies
+# in a tree-like list.
+#
+# Argument: name of the bash script you want to analyze.
+#
+# Limitations:
+# * if you have non-static function names like
+#   myfunction${number}
+#   this script will not understand it.
+# * It's not built for speed. Run time will increase
+#   quadratically over the number of functions.
+#   (40 functions may take ~10 seconds)
+
+script="$1"
+
+function_list=$(fgrep '()' "$script" \
+                | sed -e 's/().*{.*//' \
+                | sed -e 's/\s*function\s*//' \
+                | egrep -v '\s*#' \
+                | grep -v '=' )
+
+echo -n "Number of functions:"
+echo "$function_list" | wc -l
+echo
+
+for caller in $function_list ; do
+  echo "$caller"
+  for called in $function_list ; do
+    if [[ $caller == $called ]] ; then
+      continue
+    fi
+    awk "/^$caller\\(\\)/ {flag=1} flag; /^\}$/ {flag=0}" "$script" \
+    | grep -o "$called" \
+    | sort | uniq \
+    | sed -e 's/^/  /'
+  done
+done
