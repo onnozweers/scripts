@@ -16,14 +16,20 @@
 
 script="$1"
 
-function_list=$(fgrep '()' "$script" \
+if [ ! -f "$script" ] ; then
+  echo 1>&2 "Please provide the filename of a bash script."
+  exit 1
+fi
+
+function_list=$(grep '()\s{' "$script" \
                 | sed -e 's/().*{.*//' \
                 | sed -e 's/\s*function\s*//' \
                 | egrep -v '\s*#' \
                 | grep -v '=' )
 
 echo -n "Number of functions:"
-echo "$function_list" | wc -l
+# The grep is to filter out empty lines
+echo "$function_list" | grep . | wc -l
 echo
 
 for caller in $function_list ; do
@@ -35,6 +41,6 @@ for caller in $function_list ; do
     awk "/^$caller\\(\\)/ {flag=1} flag; /^\}$/ {flag=0}" "$script" \
     | grep -o "$called" \
     | sort | uniq \
-    | sed -e 's/^/  /'
+    | sed -e 's/^/ └─ /'
   done
 done
