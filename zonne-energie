@@ -1,0 +1,52 @@
+#!/bin/bash
+
+usage () {
+  cat <<-EOF
+	$0 - ophalen en afdrukken van zonneverwachting Meteoserver
+
+	Argument: API URL om de gegevens van op te halen.
+	Voorbeeld: https://data.meteoserver.nl/api/solar.php?pc=1000AA&key=API_KEY
+
+	Een API URL krijg je door een gratis account aan te maken op meteoserver.nl.
+	Met een gratis account mag je 500 API requests per maand doen.
+	Dit script doet caching: de API wordt maar één keer per dag gebruikt.
+	EOF
+}
+
+CACHE_FILE="$HOME/.cache/meteoserver-solar.json"
+
+if [[ $(find .cache/meteoserver-solar.json -mtime -1) ]] ; then
+  echo "Cached data wordt gebruikt."
+else
+  echo "Cached data is verouderd; nieuwe data wordt opgehaald van de API."
+  api_url="$1"
+  if [[ -z $api_url ]] ; then
+    echo 1>&2 "FOUT: geef een API URL op om de gegevens op te halen."
+    echo 1>&2
+    usage 
+    exit 0
+  fi
+  # Haal data in JSON formaat op van de meteoserver API URL
+  curl --silent --fail \
+       "$api_url" \
+  > "$CACHE_FILE"  
+fi
+
+
+# Converteer de JSON naar platte tekst.
+# Velden:
+# .cet  = datum + tijd in CET tijdzone
+# .gr_w = zonnestraling in watt/m2
+jq -r '.forecast[] | select(.gr_w|tonumber > 0) | "\(.cet) \(.gr_w)"' "$CACHE_FILE" \
+| while read datum tijd gr_w; do
+  # Als er een nieuwe dag begint, lege regel invoegen
+  if [[ $vorige_datum != $datum ]] ; then
+    echo
+  fi
+  # De lengte van de staaf wordt 1/5 van het aantal watt per m2
+  lengte=$(( ( (gr_w + 5 - 1) / 5 ) ))
+  staaf=$(printf "%0.s█" $(seq 1 $lengte) )
+  echo "${datum:0:5} $tijd $staaf ($gr_w)"
+  # Bewaar datum om te weten wanneer we een lege regel moeten invoegen
+  vorige_datum="$datum"
+done
