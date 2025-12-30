@@ -16,9 +16,9 @@ usage () {
 CACHE_FILE="$HOME/.cache/meteoserver-solar.json"
 
 if [[ $(find .cache/meteoserver-solar.json -mtime -1) ]] ; then
-  echo "Cached data wordt gebruikt."
+  echo "Cached data wordt gebruikt. ($CACHE_FILE)"
 else
-  echo "Cached data is verouderd; nieuwe data wordt opgehaald van de API."
+  echo "Cached data is niet (meer) geldig; nieuwe data wordt opgehaald van de API."
   api_url="$1"
   if [[ -z $api_url ]] ; then
     echo 1>&2 "FOUT: geef een API URL op om de gegevens op te halen."
